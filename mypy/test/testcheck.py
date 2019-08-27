@@ -26,6 +26,7 @@ from mypy.semanal_main import core_modules
 typecheck_files = [
     'check-basic.test',
     'check-union-or-syntax.test',
+    'check-union-pos-syntax.test',
     'check-callable.test',
     'check-classes.test',
     'check-statements.test',

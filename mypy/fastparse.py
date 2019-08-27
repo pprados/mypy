@@ -64,6 +64,7 @@ try:
             Num,
             UnaryOp,
             USub,
+            UAdd,
         )
 
         def ast3_parse(source: Union[str, bytes], filename: str, mode: str,
@@ -92,6 +93,7 @@ try:
             Num,
             UnaryOp,
             USub,
+            UAdd,
         )
 
         def ast3_parse(source: Union[str, bytes], filename: str, mode: str,
@@ -745,7 +747,7 @@ class ASTConverter:
             rvalue = TempNode(AnyType(TypeOfAny.special_form), no_rhs=True)  # type: Expression
         else:
             rvalue = self.visit(n.value)
-        typ = TypeConverter(self.errors, line=n.lineno).visit(n.annotation) # PPR: on cherche à analyser les annotations
+        typ = TypeConverter(self.errors, line=n.lineno).visit(n.annotation)
         assert typ is not None
         typ.column = n.annotation.col_offset
         s = AssignmentStmt([self.visit(n.target)], rvalue, type=typ, new_syntax=True)
@@ -1386,6 +1388,7 @@ class TypeConverter:
                 line=self.line,
                 column=getattr(n, 'col_offset', -1)
             )
+
         left = self.visit(n.left)
         right = self.visit(n.right)
         return UnionType([left, right],
@@ -1435,14 +1438,12 @@ class TypeConverter:
             if isinstance(typ.literal_value, int):
                 typ.literal_value *= -1
                 return typ
-        # if not isinstance(n.op, ast3.BitOr):
-        #     self.fail(TYPE_COMMENT_SYNTAX_ERROR, self.line, getattr(n, 'col_offset', -1))
-        #     return AnyType(TypeOfAny.from_error)
-        # left = self.visit(n.left)
-        # right = None
-        # return UnionType([left, right],
-        #                  line=self.line,
-        #                  column=self.convert_column(n.col_offset))
+        if isinstance(typ, UnboundType) and isinstance(n.op, UAdd):
+            left = self.visit(n.operand)
+            right = UnboundType('None', line=self.line)
+            return UnionType([left, right],
+                             line=self.line,
+                             column=self.convert_column(n.col_offset))
         return self.invalid_type(n)
 
     def numeric_type(self, value: object, n: AST) -> Type:
@@ -1510,7 +1511,7 @@ class TypeConverter:
             if len(n.slice.value.elts) == 0:
                 empty_tuple_index = True
         else:
-            params = [self.visit(n.slice.value)]  # PPR: c'est ici qu'on va analyse les 'a'+'b'
+            params = [self.visit(n.slice.value)]
 
         value = self.visit(n.value)
         if isinstance(value, UnboundType) and not value.args:
