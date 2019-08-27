@@ -1386,7 +1386,6 @@ class TypeConverter:
                 line=self.line,
                 column=getattr(n, 'col_offset', -1)
             )
-
         left = self.visit(n.left)
         right = self.visit(n.right)
         return UnionType([left, right],
