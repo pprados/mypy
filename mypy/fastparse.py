@@ -745,7 +745,7 @@ class ASTConverter:
             rvalue = TempNode(AnyType(TypeOfAny.special_form), no_rhs=True)  # type: Expression
         else:
             rvalue = self.visit(n.value)
-        typ = TypeConverter(self.errors, line=n.lineno).visit(n.annotation)
+        typ = TypeConverter(self.errors, line=n.lineno).visit(n.annotation) # PPR: on cherche à analyser les annotations
         assert typ is not None
         typ.column = n.annotation.col_offset
         s = AssignmentStmt([self.visit(n.target)], rvalue, type=typ, new_syntax=True)
@@ -1436,6 +1436,14 @@ class TypeConverter:
             if isinstance(typ.literal_value, int):
                 typ.literal_value *= -1
                 return typ
+        # if not isinstance(n.op, ast3.BitOr):
+        #     self.fail(TYPE_COMMENT_SYNTAX_ERROR, self.line, getattr(n, 'col_offset', -1))
+        #     return AnyType(TypeOfAny.from_error)
+        # left = self.visit(n.left)
+        # right = None
+        # return UnionType([left, right],
+        #                  line=self.line,
+        #                  column=self.convert_column(n.col_offset))
         return self.invalid_type(n)
 
     def numeric_type(self, value: object, n: AST) -> Type:
@@ -1503,7 +1511,7 @@ class TypeConverter:
             if len(n.slice.value.elts) == 0:
                 empty_tuple_index = True
         else:
-            params = [self.visit(n.slice.value)]
+            params = [self.visit(n.slice.value)]  # PPR: c'est ici qu'on va analyse les 'a'+'b'
 
         value = self.visit(n.value)
         if isinstance(value, UnboundType) and not value.args:
