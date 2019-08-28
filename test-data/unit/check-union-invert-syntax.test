@@ -1,28 +1,33 @@
 -- Type checking of union types with '|' syntax
 
-[case testUnionPosSyntaxWithBuiltinsTypes]
+[case testUnionInvertSyntaxWithBuiltinsTypes]
 # flags: --python-version 3.9
-def f(x: +int) -> +int:
+def f(x: ~int) -> ~int:
     reveal_type(x)  # N: Revealed type is 'Union[builtins.int, None]'
-    z: +int = 0
+    z: ~int = 0
     reveal_type(z)  # N: Revealed type is 'Union[builtins.int, None]'
     return x
 reveal_type(f)  # N: Revealed type is 'def (x: Union[builtins.int, None]) -> Union[builtins.int, None]'
 
-[case testUnionPosSyntaxWithTypes]
+[case testUnionInvertSyntaxWithTypes]
 # flags: --python-version 3.9
 class A: pass
-def f(x: +A) -> +A:
+def f(x: ~A) -> ~A:
     reveal_type(x)  # N: Revealed type is 'Union[__main__.A, None]'
-    z: +A = A()
+    z: ~A = A()
     reveal_type(z)  # N: Revealed type is 'Union[__main__.A, None]'
     return x
 reveal_type(f)  # N: Revealed type is 'def (x: Union[__main__.A, None]) -> Union[__main__.A, None]'
 
-[case testUnionPosSyntaxWithBadOperator]
+[case testUnionInvertSyntaxWithTypes]
 # flags: --python-version 3.9
-x: +1  # E: Invalid type comment or annotation
+from typing_extensions import Literal
+reveal_type(~Literal[4])  # N: Revealed type is 'Any'
 
-[case testUnionPosInComment]
+[case testUnionInvertSyntaxWithBadOperator]
 # flags: --python-version 3.9
-x = 1  # type: +int
+x: ~1  # E: Invalid type comment or annotation
+
+[case testUnionInvertSyntaxInComment]
+# flags: --python-version 3.9
+x = 1  # type: ~int

@@ -38,7 +38,7 @@ For example, ``IntList`` below is iterable, over ``int`` values:
    from typing import Iterator, Iterable, Optional
 
    class IntList:
-       def __init__(self, value: int, next: Optional[IntList]) -> None:
+       def __init__(self, value: int, next: ~IntList) -> None:
            self.value = value
            self.next = next
 
@@ -236,9 +236,9 @@ be used in ``with`` and ``async with`` statements.
 
    def __enter__(self) -> T
    def __exit__(self,
-                exc_type: Optional[Type[BaseException]],
-                exc_value: Optional[BaseException],
-                traceback: Optional[TracebackType]) -> Optional[bool]
+                exc_type: ~Type[BaseException],
+                exc_value: ~BaseException,
+                traceback: ~TracebackType) -> ~bool
 
 ``AsyncContextManager[T]``
 --------------------------
@@ -247,9 +247,9 @@ be used in ``with`` and ``async with`` statements.
 
    def __aenter__(self) -> Awaitable[T]
    def __aexit__(self,
-                 exc_type: Optional[Type[BaseException]],
-                 exc_value: Optional[BaseException],
-                 traceback: Optional[TracebackType]) -> Awaitable[Optional[bool]]
+                 exc_type: ~Type[BaseException],
+                 exc_value: ~BaseException,
+                 traceback: ~TracebackType) -> Awaitable[~bool]
 
 Simple user-defined protocols
 *****************************
@@ -426,15 +426,15 @@ member:
    from typing_extensions import Protocol
 
    class Combiner(Protocol):
-       def __call__(self, *vals: bytes, maxlen: Optional[int] = None) -> List[bytes]: ...
+       def __call__(self, *vals: bytes, maxlen: ~int = None) -> List[bytes]: ...
 
    def batch_proc(data: Iterable[bytes], cb_results: Combiner) -> bytes:
        for item in data:
            ...
 
-   def good_cb(*vals: bytes, maxlen: Optional[int] = None) -> List[bytes]:
+   def good_cb(*vals: bytes, maxlen: ~int = None) -> List[bytes]:
        ...
-   def bad_cb(*vals: bytes, maxitems: Optional[int]) -> List[bytes]:
+   def bad_cb(*vals: bytes, maxitems: ~int) -> List[bytes]:
        ...
 
    batch_proc([], good_cb)  # OK

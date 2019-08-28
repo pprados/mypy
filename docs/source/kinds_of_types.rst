@@ -247,14 +247,14 @@ Optional types and the None type
 ********************************
 
 You can use the ``Optional`` type modifier to define a type variant
-that allows ``None``, such as ``Optional[int]`` (``Optional[X]`` is
+that allows ``None``, such as ``~int`` or``Optional[int]`` (``~X`` is
 the preferred shorthand for ``X | None`` or ``Union[X, None]``):
 
 .. code-block:: python
 
    from typing import Optional
 
-   def strlen(s: str) -> Optional[int]:
+   def strlen(s: str) -> ~int:
        if not s:
            return None  # OK
        return len(s)
@@ -269,7 +269,7 @@ values:
 
 .. code-block:: python
 
-   def my_inc(x: Optional[int]) -> int:
+   def my_inc(x: ~int) -> int:
        return x + 1  # Error: Cannot add None and int
 
 Instead, an explicit ``None`` check is required. Mypy has
@@ -279,7 +279,7 @@ recognizes ``is None`` checks:
 
 .. code-block:: python
 
-   def my_inc(x: Optional[int]) -> int:
+   def my_inc(x: ~int) -> int:
        if x is None:
            return 0
        else:
@@ -295,7 +295,7 @@ Other supported checks for guarding against a ``None`` value include
 
 .. code-block:: python
 
-   def concat(x: Optional[str], y: Optional[str]) -> Optional[str]:
+   def concat(x: ~str, y: ~str) -> ~str:
        if x is not None and y is not None:
            # Both x and y are not None here
            return x + y
@@ -312,7 +312,7 @@ will complain about the possible ``None`` value. You can use
 .. code-block:: python
 
    class Resource:
-       path: Optional[str] = None
+       path: ~str = None
 
        def initialize(self, path: str) -> None:
            self.path = path
@@ -335,7 +335,7 @@ This is why you need to annotate an attribute in a cases like the class
 .. code-block:: python
 
     class Resource:
-        path: Optional[str] = None
+        path: ~str = None
         ...
 
 This also works for attributes defined within methods:
@@ -344,7 +344,7 @@ This also works for attributes defined within methods:
 
     class Counter:
         def __init__(self) -> None:
-            self.count: Optional[int] = None
+            self.count: ~int = None
 
 As a special case, you can use a non-optional type when initializing an
 attribute to ``None`` inside a class body *and* using a type comment,

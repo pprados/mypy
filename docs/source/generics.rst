@@ -720,7 +720,7 @@ defeating the purpose of using aliases.  Example:
     for i, j in NewVec[int]():
         ...
 
-    OIntVec = Optional[Vec[int]]
+    OIntVec = ~Vec[int]
 
 .. note::
 

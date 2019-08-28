@@ -202,8 +202,8 @@ Our first attempt at writing this function might look like this:
 
     def mouse_event(x1: int,
                     y1: int,
-                    x2: Optional[int] = None,
-                    y2: Optional[int] = None) -> ClickEvent | DragEvent:
+                    x2: ~int = None,
+                    y2: ~int = None) -> ClickEvent | DragEvent:
         if x2 is None and y2 is None:
             return ClickEvent(x1, y1)
         elif x2 is not None and y2 is not None:
@@ -247,8 +247,8 @@ to more accurately describe the function's behavior:
 
     def mouse_event(x1: int,
                     y1: int,
-                    x2: Optional[int] = None,
-                    y2: Optional[int] = None) -> ClickEvent | DragEvent:
+                    x2: ~int = None,
+                    y2: ~int = None) -> ClickEvent | DragEvent:
         if x2 is None and y2 is None:
             return ClickEvent(x1, y1)
         elif x2 is not None and y2 is not None:

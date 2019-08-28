@@ -64,7 +64,7 @@ try:
             Num,
             UnaryOp,
             USub,
-            UAdd,
+            Invert,
         )
 
         def ast3_parse(source: Union[str, bytes], filename: str, mode: str,
@@ -93,7 +93,7 @@ try:
             Num,
             UnaryOp,
             USub,
-            UAdd,
+            Invert,
         )
 
         def ast3_parse(source: Union[str, bytes], filename: str, mode: str,
@@ -1438,7 +1438,7 @@ class TypeConverter:
             if isinstance(typ.literal_value, int):
                 typ.literal_value *= -1
                 return typ
-        if isinstance(typ, UnboundType) and isinstance(n.op, UAdd):
+        if isinstance(typ, UnboundType) and isinstance(n.op, Invert):
             left = self.visit(n.operand)
             right = UnboundType('None', line=self.line)
             return UnionType([left, right],

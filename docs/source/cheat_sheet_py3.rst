@@ -71,6 +71,8 @@ Built-in types
    x: Tuple[int, str, float] = (3, "yes", 7.5)
 
    # Use Optional[] for values that could be None
+   x: ~str = some_function()
+   #or
    x: Optional[str] = some_function()
    # Mypy understands a value can't be None in an if-statement
    if x is not None:
@@ -114,10 +116,10 @@ Python 3 supports an annotation syntax for function declarations.
    # You can of course split a function annotation over multiple lines
    def send_email(address: Union[str, List[str]],
                   sender: str,
-                  cc: Optional[List[str]],
-                  bcc: Optional[List[str]],
+                  cc: ~List[str],
+                  bcc: ~List[str],
                   subject='',
-                  body: Optional[List[str]] = None
+                  body: ~List[str] = None
                   ) -> bool:
        ...
 
@@ -153,7 +155,7 @@ When you're puzzled or when things are complicated
    # If you initialize a variable with an empty container or "None"
    # you may have to help mypy a bit by providing a type annotation
    x: List[str] = []
-   x: Optional[str] = None
+   x: ~str = None
 
    # This makes each positional arg and each keyword arg a "str"
    def call(self, *args: str, **kwargs: str) -> str:

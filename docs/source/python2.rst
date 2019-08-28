@@ -72,8 +72,8 @@ Here is an example (from PEP 484):
 
     def send_email(address,     # type: Union[str, List[str]]
                    sender,      # type: str
-                   cc,          # type: Optional[List[str]]
-                   bcc,         # type: Optional[List[str]]
+                   cc,          # type: ~List[str]
+                   bcc,         # type: ~List[str]
                    subject='',
                    body=None    # type: List[str]
                    ):

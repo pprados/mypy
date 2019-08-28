@@ -308,6 +308,12 @@ For more details, see :ref:`no_strict_optional`.
 
     .. code-block:: python
 
+        def foo(x: ~int = None) -> None:
+            print(x)
+
+    or
+    .. code-block:: python
+
         def foo(x: Optional[int] = None) -> None:
             print(x)
 

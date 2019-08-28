@@ -222,7 +222,7 @@ ints or strings, but no other types. You can express this using the ``Union`` ty
 
 Similarly, suppose that you want the function to accept only strings or None. You can
 again use ``Union`` and use ``str | None`` (or ``Union[str, None]``) -- or alternatively, use the type
-``Optional[str]``. These two types are identical and interchangeable: ``Optional[str]``
+``~str`` (or ``Optional[str]``). These two types are identical and interchangeable: ``Optional[str]``
 is just a shorthand or *alias* for ``Union[str, None]``. It exists mostly as a convenience
 to help function signatures look a little cleaner:
 
@@ -230,8 +230,8 @@ to help function signatures look a little cleaner:
 
    from typing import Optional
 
-   def greeting(name: Optional[str] = None) -> str:
-       # Optional[str] means the same thing as Union[str, None]
+   def greeting(name: ~str = None) -> str:
+       # ~str means the same thing as Union[str, None]
        if name is None:
            name = 'stranger'
        return 'Hello, ' + name

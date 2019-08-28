@@ -45,7 +45,8 @@ Built-in types
    x = [u"one", u"two"]  # type: List[Text]
 
    # Use Optional[] for values that could be None
-   x = some_function()  # type: Optional[str]
+   # Accept ~T or Optional[T]
+   x = some_function()  # type: ~str
    # Mypy understands a value can't be None in an if-statement
    if x is not None:
        print x.upper()
@@ -106,8 +107,8 @@ Functions
    # There's an alternative syntax for functions with many arguments
    def send_email(address,     # type: str | List[str]
                   sender,      # type: str
-                  cc,          # type: Optional[List[str]]
-                  bcc,         # type: Optional[List[str]]
+                  cc,          # type: ~List[str]
+                  bcc,         # type: ~List[str]
                   subject='',
                   body=None    # type: List[str]
                   ):
@@ -138,7 +139,7 @@ When you're puzzled or when things are complicated
    # If you initialize a variable with an empty container or "None"
    # you may have to help mypy a bit by providing a type annotation
    x = []  # type: List[str]
-   x = None  # type: Optional[str]
+   x = None  # type: ~str
 
    # This makes each positional arg and each keyword arg a "str"
    def call(self, *args, **kwargs):
